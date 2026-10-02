@@ -1,0 +1,37 @@
+name: Build Gfriends Inputer Exe
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: # 支持在网页上手动点击触发构建
+
+jobs:
+  build:
+  
+    runs-on: windows-latest  # 使用 Windows 云端环境进行打包，对 PyInstaller 最友好
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller requests opencv-python numpy
+
+    - name: Build with PyInstaller
+      run: |
+        # 请根据你的实际主脚本名称调整（例如 "Gfriends Inputer.py" 或 "main.py"）
+        pyinstaller --onefile --noconsole "Gfriends Inputer.py"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Gfriends-Inputer-Windows-Jef12
+        path: dist/*.exe
