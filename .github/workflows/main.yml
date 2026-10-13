@@ -9,6 +9,7 @@ on:
     paths:
     - '**.py'
     - '**.yml'
+  workflow_dispatch:
 
 jobs:
   build:
